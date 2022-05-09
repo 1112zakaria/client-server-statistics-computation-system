@@ -1,0 +1,153 @@
+SYSC4001 Assignment 3
+Author: Zakaria Ismail
+S#: 101143497
+
+Discussion of Solution and Pseudocode
+
+There is the client, user.c, and the server, calculator.c.
+
+
+The Client 
+
+The client parses input text using parse_input,
+a function I wrote, encapsulates the parsed data
+into a struct, sends the struct via message queue,
+and receives the server's response.
+
+msgrcv() and msgsnd() were used to send and receive
+messages.
+
+The key component here is the parser, parse_input().
+The pseudocode is below:
+
+def parse_input(char* input, Command_Type cmd, int* arg):
+    has_arg = 0
+    is_valid = 1
+    expected_string = ""
+
+    # parse input for command word and optional argument strings
+    #   using regex
+    sscanf(input, "%s %[0-9]s?", command_word, string_arg);
+    
+    expected_string.append(command_word)
+    if string_arg is not empty:
+        has_arg = 1
+        expected_string.append(string_arg)
+    
+    # check that parsed input matches actual input
+    if expected_string matches input:
+        # valid input
+        # parse cmd word and get corresponding enum
+        selected_cmd = get_command(command_word)
+        if selected_cmd == ERROR:
+            is_valid = 0
+    else:
+        is_valid = 0
+
+    # write to cmd
+    *cmd = (is_valid) ? selected_cmd : ERROR
+
+
+The pseudocode for the client as a whole is:
+
+def run_client():
+    running = 1
+    
+    # msgget msg queues
+    client_q_id = create_msg_queue(CLIENT_KEY)
+    server_q_id = create_msg_queue(SERVER_KEY)
+
+    while (running):
+        # read user input
+        buffer = input("Enter command ('end' to quit): ");
+        parse_input(buffer, &input_command, &input_arg)
+
+        if (input_command != ERROR):
+            # user input is valid command + arg, if needed
+            # encapsulate user input into struct
+            client_msg.client_id = getpid()
+            client_msg.command = input_command
+            client_msg.arg = input_arg 
+
+            # send message to server
+            msgsnd(client_q_id, &client_msg, BUFSIZ, 0)
+
+            # receive server reply
+            msgrcv(server_q_id, &server_msg, BUFSIZ, getpid(), 0)
+
+            # print server reply
+            print_response(server_msg, client_msg)
+
+            if (client_msg.command == END):
+                # end client
+                running = 0
+            
+        else:
+            print("Invalid input")
+
+
+
+
+The Server 
+
+The server waits for a client message. When it gets a message,
+performs the received command and sends the the client a
+string reply stating that the command was performed.
+
+The key components of the server to implement each command are:
+    - perform_action()
+    - insert_value()
+    - delete_value()
+    - get_sum()
+    - get_average()
+    - get_median()
+    - get_min()
+
+Pseudocode for the server as a whole:
+
+# user data array for multiple clients
+static int user_data[100][100]
+
+def run_server():
+    running = 1
+    num_clients = 0
+    num_rows = 0
+    
+    # msgget msg queues
+    client_q_id = create_msg_queue(CLIENT_KEY)
+    server_q_id = create_msg_queue(SERVER_KEY)
+
+    # initialize all array header fields as free
+    initialize_data()
+
+    while (running):
+        # receive msg 
+        msgrcv(client_q_id, &client_msg, BUFSIZ, 0, 0)
+
+        # search user data array for client
+        client_id = find_client(client_msg.client_id)
+
+        if (client_id == -1):
+            # client is new
+            add_client(client_msg.client_id, &num_clients, &num_rows)
+            client_id = find_client(client_msg.client_id)
+        
+        # perform action returns string response for client
+        response = perform_action(client_msg, client_id, &num_clients)
+        # encapsulate data to client
+        server_msg.client_id = client_msg.client_id
+        server_msg.server_id = getpid()
+        server_msg.response = response
+
+        msgsnd(server_q_id, &server_msg, BUFSIZ, 0)
+
+        if (num_clients == 0):
+            running = 0
+
+The perform_action() call calls insert_value(), delete_value(),
+get_sum(), get_median(), get_average(), and get_min() depending
+on the enum value in the client_msg struct.
+
+    
+
+

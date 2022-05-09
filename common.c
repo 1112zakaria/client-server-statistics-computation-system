@@ -5,7 +5,12 @@
 #include "common.h"
 
 
-
+/**
+ * @brief Create a msg queue
+ * 
+ * @param key 
+ * @return int 
+ */
 int create_msg_queue(key_t key) {
     int msgid = msgget((key_t)key, 0666 | IPC_CREAT);
     if (msgid == -1)

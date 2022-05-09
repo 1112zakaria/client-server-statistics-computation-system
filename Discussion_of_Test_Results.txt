@@ -1,0 +1,303 @@
+SYSC4001 Assignment 3
+Author: Zakaria Ismail
+S#: 101143497
+
+Discussion of Test Results
+
+To test the program, the commands:
+    - insert
+    - delete
+    - sum
+    - average
+    - min
+    - median
+will be verified
+
+All tests will start from a newly started client each time.
+Test cases have been created for each test and the inputs and
+outputs and expected outputs have been described. Below are the 
+test case definitions and their test results.
+
+--------------------------------------------------------------------
+Verify Insert:
+
+To verify that insert works as expected, we verify that:
+    - TEST 1: insert adds an element when # elements < 98
+    - TEST 2: insert throws and handles error when # elements >= 98
+
+---
+TEST 1:
+    COMMANDS: insert 6, sum 
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: sum
+Output: Sum is 6
+Expected: Sum is 6
+
+---
+TEST 2:
+    COMMANDS: sum, (insert 1) x 98, insert 1
+    ...
+
+Insert works as expected.
+
+--------------------------------------------------------------------
+Verify Delete:
+
+To verify that delete works as expected, we verify that:
+    - TEST 3: delete throws and handles an error when # elements < 1
+    - TEST 4: delete deletes element k when # elements >= 1 and there 
+        is 1 occurrence
+    - TEST 5: delete deletes element k when # elements >= 1 and there
+        are more than 1 occurrences
+
+---
+TEST 3:
+    COMMANDS: delete 5
+
+Input: delete 5
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+---
+TEST 4:
+    COMMANDS: insert 6, delete 6, sum
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: delete 6
+Output: Deleted all occurrences of 6
+Expected: Deleted all occurrences of 6
+
+Input: sum
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+---
+TEST 5:
+    COMMANDS: insert 6, insert 6, delete 6, sum
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: delete 6
+Output: Deleted all occurrences of 6
+Expected: Deleted all occurrences of 6
+
+Input: sum
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+Delete works as expected.
+
+--------------------------------------------------------------------
+Verify Sum:
+
+To verify that sum works as expected, we will verify that:
+    - TEST 6: sum gives correct value for 1 element 
+    - TEST 7: sum gives correct value for multiple elements
+    - TEST 8: sum throws and handles error when there are no elements 
+
+---
+TEST 6:
+    COMMANDS: insert 6, sum 
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: sum
+Output: Sum is 6
+Expected: Sum is 6
+
+---
+TEST 7:
+    COMMANDS: insert 6, insert 6, sum
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: sum
+Output: Sum is 6
+Expected: Sum is 6
+
+---
+TEST 8:
+    COMMANDS: sum 
+
+Input: sum
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+Sum works as expected.
+
+--------------------------------------------------------------------
+Verify Average:
+
+To verify that average works as expected, we will verify that:
+    - TEST 9: average throws and handles error when there are no elements
+    - TEST 10: average gives correct value when there is 1 element
+    - TEST 11: average gives correct value when there are more than 1 elements
+
+---
+TEST 9:
+    COMMANDS: average 
+
+Input: average
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+---
+TEST 10:
+    COMMANDS: insert 6, average 
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: average
+Output: Average is 6
+Expected: Average is 6
+
+---
+TEST 11:
+    COMMANDS: insert 4, insert 6, average 
+
+Input: insert 4
+Output: Inserted 4
+Expected: Inserted 4
+
+Input: insert 6
+Output: Inserted 6
+Expected: Inserted 6
+
+Input: average
+Output: Average is 5
+Expected: Average is 5
+
+Average works as expected.
+
+--------------------------------------------------------------------
+Verify Min:
+
+To verify that min works as expected, we will verify that:
+    - TEST 12: min throws and handles an error when there are no elements 
+    - TEST 13: min returns the correct value when there is 1 element 
+    - TEST 14: min returns the correct value when there are 2 or more elements 
+
+---
+TEST 12:
+    COMMANDS: min 
+
+Input: min
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+---
+TEST 13:
+    COMMANDS: insert 1, min 
+
+Input: insert 1
+Output: Inserted 1
+Expected: Inserted 1
+
+Input: min
+Output: Min is 1
+Expected: Min is 1
+
+---
+TEST 14: 
+    COMMANDS: insert 2, insert 1, min 
+
+Input: insert 2
+Output: Inserted 2
+Expected: Inserted 2
+
+Input: insert 1
+Output: Inserted 1
+Expected: Inserted 1
+
+Input: min
+Output: Min is 1
+Expected: Min is 1
+
+Min works as expected.
+
+--------------------------------------------------------------------
+Verify Median:
+
+To verify that median works as expected, we will verify that:
+    - TEST 15: median throws and handles an error when # elements < 1
+    - TEST 16: median returns correct value when # elements is odd
+    - TEST 17: median returns correct values when # elements is even
+
+---
+TEST 15:
+    COMMANDS: median 
+
+Input: median
+Output: An error occured: code 2. No elements stored
+Expected: An error occured: code 2. No elements stored
+
+---
+TEST 16:
+    COMMANDS: insert 3, insert 2, insert 1, median 
+
+
+Input: insert 3
+Output: Inserted 3
+Expected: Inserted 3
+
+Input: insert 2
+Output: Inserted 2
+Expected: Inserted 2
+
+Input: insert 1
+Output: Inserted 1
+Expected: Inserted 1
+
+Input: median
+Output: Median is 2
+Expected: Median is 2
+
+---
+TEST 17:
+    COMMANDS: insert 4, insert 3, insert 2, insert 1, median
+
+Input: insert 4
+Output: Inserted 4
+Expected: Inserted 4
+
+Input: insert 3
+Output: Inserted 3
+Expected: Inserted 3
+
+Input: insert 2
+Output: Inserted 2
+Expected: Inserted 2
+
+Input: insert 1
+Output: Inserted 1
+Expected: Inserted 1
+
+Input: median
+Output: Medians are 3 and 2
+Expected: Medians are 3 and 2
+
+
+Median works as expected.

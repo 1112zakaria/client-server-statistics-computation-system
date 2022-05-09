@@ -13,3 +13,4 @@
 *.tar
 *.DS_Store
 *.o
+!Computation_of_Average_Time.pdf
