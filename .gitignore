@@ -12,3 +12,4 @@
 *.zip
 *.tar
 *.DS_Store
+*.o
